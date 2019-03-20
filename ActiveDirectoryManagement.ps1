@@ -51,6 +51,20 @@ $name = Read-Host -Prompt "Name of user"
 Get-ADUser -Identity $name 
 }
 
+function deleteOU()
+{
+$ou = Read-Host -Prompt "Name of OU.(Can in also use DC for location)"
+Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $ou | Remove-ADOrganizationalUnit
+ 
+}
+
+function removeGroup()
+{
+
+$group = Read-Host -Prompt "Name of group to delete"
+Get-ADGroup -Filter * | Where-Object Name -eq $group | Remove-ADGroup 
+}
+
 
 function menu()
 {
@@ -66,9 +80,13 @@ Write-Output "6. Search for user"
 Write-Output "7. Delete user"
 Write-Output "8. Delete OU"
 Write-Output "9. Delete Group"
+Write-Output "10. Quit"
 
 $selection = Read-Host -Prompt "Selection?"
-
+$looper = $true
+while($looper -eq $true)
+{
+menu
 if($selection -eq 1)
 {
 newUser
@@ -97,7 +115,19 @@ elseif($selection -eq 7)
 {
 deleteUser
 }
-
+elseif($selection -eq 8)
+{
+deleteOU
+}
+elseif($selection -eq 9)
+{
+removeGroup
+}
+elseif($selection -eq 10)
+{
+$looper = $false
+}
+}
 }
 
 menu
